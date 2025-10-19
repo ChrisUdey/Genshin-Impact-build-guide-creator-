@@ -6,6 +6,7 @@ class Character(Base):
     __tablename__ = "characters"
 
     id = Column(Integer, primary_key=True, index=True)
+    key = Column(String(100), unique=True, index=True)  # Add this line!
     name = Column(String(100), nullable=False)
     title = Column(String(200))
     vision = Column(String(50))

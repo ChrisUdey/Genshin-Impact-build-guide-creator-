@@ -24,7 +24,7 @@ def seed_characters():
         # Check if characters already exist
         existing_count = db.query(Character).count()
         if existing_count > 0:
-            print(f"⚠️  Characters already seeded ({existing_count} characters found)")
+            print(f" Characters already seeded ({existing_count} characters found)")
             response = input("Delete and re-seed? (yes/no): ")
             if response.lower() != 'yes':
                 print("Aborting seed.")
@@ -65,6 +65,7 @@ def seed_characters():
 
                 # Create character
                 character = Character(
+                    key=key,
                     name=char_data.get('name'),
                     title=char_data.get('title'),
                     vision=char_data.get('vision'),

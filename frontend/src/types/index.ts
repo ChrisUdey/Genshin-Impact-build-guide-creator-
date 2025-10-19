@@ -1,11 +1,17 @@
 export interface Character {
     id: number;
+    key: string;
     name: string;
     title: string;
     vision: string;
     weapon: string;
+    gender: string;
     nation: string;
+    affiliation: string;
     rarity: number;
+    release: string | null;
+    constellation: string;
+    birthday: string;
     description: string;
 }
 
@@ -15,12 +21,18 @@ export interface BuildGuide {
     title: string;
     description: string;
     created_at: string;
-    uploads: Upload[];
 }
 
 export interface Upload {
     id: number;
+    build_guide_id: number;
     image_path: string;
     caption: string;
     uploaded_at: string;
+}
+
+export interface User {
+    id: number;
+    email: string;
+    role: string;
 }
