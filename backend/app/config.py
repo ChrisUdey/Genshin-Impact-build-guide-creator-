@@ -1,4 +1,5 @@
 from pydantic_settings import BaseSettings
+import os
 
 
 class Settings(BaseSettings):
@@ -12,8 +13,9 @@ class Settings(BaseSettings):
     MAX_FILE_SIZE: int = 2 * 1024 * 1024  # 2MB
     ALLOWED_EXTENSIONS: list = ["jpg", "jpeg", "png", "webp"]
 
-    # Database
-    DATABASE_URL: str = "sqlite:///./genshin_builds.db"
+    # Database - FIXED PATH
+    BASE_DIR: str = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    DATABASE_URL: str = f"sqlite:///{BASE_DIR}/genshin_builds.db"
 
     # CORS
     FRONTEND_URL: str = "http://localhost:3000"
