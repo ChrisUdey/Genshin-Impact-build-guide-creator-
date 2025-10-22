@@ -21,6 +21,8 @@ export interface BuildGuide {
     title: string;
     description: string;
     created_at: string;
+    picture_path?: string;
+    character?: Character;
 }
 
 export interface Upload {

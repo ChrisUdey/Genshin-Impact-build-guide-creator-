@@ -26,10 +26,12 @@ class UploadResponse(BaseModel):
 class BuildGuideResponse(BaseModel):
     id: int
     character_id: int
+    character_name: Optional[str]
     title: str
     description: str
-    created_at: datetime
-    uploads: List[UploadResponse] = []
+    picture_path: Optional[str]
+    created_at: str
+    uploads: List[dict] = []
 
     class Config:
         from_attributes = True

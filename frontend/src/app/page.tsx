@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import api from '@/lib/api';
+import { setCharacterMap } from '@/lib/characters';
 import { Character } from '@/types';
 
 export default function HomePage() {
@@ -18,6 +19,7 @@ export default function HomePage() {
             try {
                 const response = await api.get('/api/characters/');
                 setCharacters(response.data);
+                setCharacterMap(response.data); // populate map
             } catch (error) {
                 console.error('Failed to fetch characters:', error);
             } finally {

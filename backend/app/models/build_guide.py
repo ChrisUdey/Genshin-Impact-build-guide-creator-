@@ -8,9 +8,11 @@ class BuildGuide(Base):
     __tablename__ = "build_guides"
 
     id = Column(Integer, primary_key=True, index=True)
+    username = Column(String, nullable=False)
     character_id = Column(Integer, ForeignKey("characters.id"), nullable=False)
     title = Column(String(100), nullable=False)
     description = Column(Text, nullable=False)
+    picture_path = Column(String, nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow)
 
     # Relationships
