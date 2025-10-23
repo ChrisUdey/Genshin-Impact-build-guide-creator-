@@ -16,7 +16,9 @@ export interface Character {
 }
 
 export interface BuildGuide {
+    username: string;
     id: number;
+    character_name: string;
     character_id: number;
     title: string;
     description: string;

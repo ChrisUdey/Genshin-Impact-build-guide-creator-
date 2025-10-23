@@ -25,6 +25,7 @@ class UploadResponse(BaseModel):
 
 class BuildGuideResponse(BaseModel):
     id: int
+    username: str
     character_id: int
     character_name: Optional[str]
     title: str

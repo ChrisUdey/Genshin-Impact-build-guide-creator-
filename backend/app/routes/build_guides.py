@@ -17,6 +17,7 @@ def get_all_build_guides(db: Session = Depends(get_db)):
         response.append(
             BuildGuideResponse(
                 id=g.id,
+                username=g.username,
                 character_id=g.character_id,
                 character_name=g.character.name if g.character else "Unknown",
                 title=g.title,

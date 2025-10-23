@@ -56,24 +56,24 @@ def seed_build_guides():
 
 def premade_guides():
     guide1 = BuildGuide(
-        username="ChrisU",
         character_id= "1",
+        username="ChrisU",
         title="Build Guide",
         description=(
-            "IM THE BEST PLAYER IN NORTH AMERICA! and this guide covers the optimal build for Albedo. Make sure you build him on defensive artifacts"
-            "to maximize his damage output off-field, also focus on giving him at least 150% energy recharge for optimal"
+            "IM THE BEST PLAYER IN NORTH AMERICA! and this guide covers the optimal build for Albedo. Make sure you build him on defensive artifacts "
+            "to maximize his damage output off-field, also focus on giving him at least 150% energy recharge for optimal "
             "rotations "
         ),
         picture_path="build_pics/albedoguidechris.png",
         created_at=datetime.utcnow()
     )
     guide2 = BuildGuide(
-        username="NoobMaster",
         character_id= "92",
+        username="NoobMaster",
         title="Build Guide",
         description=(
-            "I want to let everyone know that we've been building Zhongli WRONG!!!"
-            "Although his stats scaling suggest defence to be his best stat, his shield scales hp"
+            "I want to let everyone know that we've been building Zhongli WRONG!!! "
+            "Although his stats scaling suggest defence to be his best stat, his shield scales hp "
             "With just 40000 HP Zhongli's shield becomes unbreakable!"
         ),
         picture_path="build_pics/zhonglibuildguide2.jpg",
