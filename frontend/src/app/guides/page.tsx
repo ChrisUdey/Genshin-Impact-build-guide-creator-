@@ -10,7 +10,7 @@ export default function BuildGuides() {
     const [currentPage, setCurrentPage] = useState(1);
     const guidesPerPage = 4;
 
-    // 🆕 New post state
+    // New post state
     const [newGuide, setNewGuide] = useState({
         username: "",
         character_name: "",
@@ -27,7 +27,8 @@ export default function BuildGuides() {
         ])
             .then(([chars, gds]) => {
                 setCharacters(chars);
-                setGuides(gds);
+                const sortedGuides = gds.sort((a: BuildGuide, b: BuildGuide) => b.id - a.id);
+                setGuides(sortedGuides);
                 setLoading(false);
             })
             .catch((err) => {
@@ -47,13 +48,13 @@ export default function BuildGuides() {
     const handlePrevPage = () => setCurrentPage((p) => Math.max(p - 1, 1));
     const handleNextPage = () => setCurrentPage((p) => Math.min(p + 1, totalPages));
 
-    // 🆕 Handle new guide form input
+    //Handle new guide form input
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
         setNewGuide((prev) => ({ ...prev, [name]: value }));
     };
 
-    // 🆕 Handle file upload (block .webp)
+    //  Handle file upload (block .webp)
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (!file) return;
@@ -67,45 +68,41 @@ export default function BuildGuides() {
         setNewGuide((prev) => ({ ...prev, picture: file }));
     };
 
-    // 🆕 Submit new guide
+    //  Submit new guide
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-
         if (!newGuide.username || !newGuide.character_name || !newGuide.title || !newGuide.description) {
             alert("Please fill in all fields.");
             return;
         }
 
-        const formData = new FormData();
-        formData.append("username", newGuide.username);
-        formData.append("character_name", newGuide.character_name);
-        formData.append("title", newGuide.title);
-        formData.append("description", newGuide.description);
-        if (newGuide.picture) formData.append("picture", newGuide.picture);
-
         try {
+            const formData = new FormData();
+            formData.append("username", newGuide.username);
+            formData.append("character_name", newGuide.character_name);
+            formData.append("title", newGuide.title);
+            formData.append("description", newGuide.description);
+            if (newGuide.picture) formData.append("picture", newGuide.picture);
+
             const res = await fetch("http://127.0.0.1:8000/api/guides/", {
                 method: "POST",
                 body: formData,
             });
 
-            if (!res.ok) throw new Error(`Failed to post guide: ${res.status}`);
+            if (!res.ok) {
+                const text = await res.text();
+                console.error("Create failed:", res.status, text);
+                alert(`Failed to submit: ${res.status}`);
+                return;
+            }
 
-            const created = await res.json();
-            setGuides((prev) => [created, ...prev]); // add new guide to top
-            setNewGuide({
-                username: "",
-                character_name: "",
-                title: "",
-                description: "",
-                picture: null,
-            });
-            alert("Guide posted successfully!");
+            alert("Submitted for approval");
         } catch (err) {
-            console.error(err);
-            alert("Error submitting guide.");
+            console.error("Network error:", err);
+            alert("Failed to reach the server. Is backend running?");
         }
     };
+
 
     if (loading) return <div className="p-10 text-center">Loading...</div>;
 
@@ -127,12 +124,17 @@ export default function BuildGuides() {
                                     <input
                                         type="text"
                                         name="username"
+                                        minLength={4}
+                                        maxLength={20}
                                         placeholder="Your Username"
                                         value={newGuide.username}
                                         onChange={handleChange}
                                         className="w-full p-3 border border-gray-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 text-gray-900"
                                         required
                                     />
+                                    <div className="text-right text-sm text-gray-500">
+                                        must be 4-20 characters
+                                    </div>
                                 </div>
 
                                 <div>
@@ -140,11 +142,12 @@ export default function BuildGuides() {
                                     <select
                                         name="character_name"
                                         value={newGuide.character_name}
+                                        aria-valuemin={1}
                                         onChange={handleChange}
                                         className="w-full p-3 border border-gray-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 text-gray-900"
                                         required
                                     >
-                                        <option value="">Select Character</option>
+                                        <option disabled={true} value="">Select Character</option>
                                         {characters.map((char) => (
                                             <option key={char.id} value={char.name}>
                                                 {char.name}
@@ -158,12 +161,17 @@ export default function BuildGuides() {
                                     <input
                                         type="text"
                                         name="title"
+                                        minLength={4}
+                                        maxLength={20}
                                         placeholder="Build Title"
                                         value={newGuide.title}
                                         onChange={handleChange}
                                         className="w-full p-3 border border-gray-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 text-gray-900"
                                         required
                                     />
+                                    <div className="text-right text-sm text-gray-500">
+                                        must be 4-30 characters
+                                    </div>
                                 </div>
                             </div>
 
@@ -172,15 +180,16 @@ export default function BuildGuides() {
                                 <label className="block text-sm font-semibold mb-1 text-gray-900">Description</label>
                                 <textarea
                                     name="description"
-                                    placeholder="Write a description (max 300 characters)..."
+                                    placeholder="Write a description (10-350 characters)..."
                                     value={newGuide.description}
                                     onChange={handleChange}
-                                    maxLength={300}
+                                    minLength={10}
+                                    maxLength={350}
                                     className="w-full p-3 border border-gray-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 text-gray-900 h-24 resize-none"
                                     required
                                 />
                                 <div className="text-right text-sm text-gray-500">
-                                    {newGuide.description.length}/300
+                                    {newGuide.description.length}/350
                                 </div>
                             </div>
 
@@ -213,6 +222,7 @@ export default function BuildGuides() {
                                     key={guide.id}
                                     className="border-2 border-gray-300 rounded-2xl p-6 hover:shadow-xl transition-all hover:scale-[1.02] bg-gradient-to-br from-gray-50 to-white"
                                 >
+                                    {/* User Picture */}
                                     <div className="flex items-center space-x-4">
                                         <img
                                             src={`http://127.0.0.1:8000/static/build_pics/default.jpg`}

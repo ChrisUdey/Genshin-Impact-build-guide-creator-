@@ -15,7 +15,6 @@ export default function LoginPage() {
         e.preventDefault();
         setError('');
         setLoading(true);
-
         try {
             await login(email, password);
             // Redirect to HOME page after successful login
@@ -24,6 +23,7 @@ export default function LoginPage() {
             setError(err.response?.data?.detail || 'Invalid credentials');
         } finally {
             setLoading(false);
+            window.location.href = '/';
         }
     };
 

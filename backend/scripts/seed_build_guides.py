@@ -65,6 +65,7 @@ def premade_guides():
             "rotations "
         ),
         picture_path="build_pics/albedoguidechris.png",
+        status="approved",
         created_at=datetime.utcnow()
     )
     guide2 = BuildGuide(
@@ -77,10 +78,28 @@ def premade_guides():
             "With just 40000 HP Zhongli's shield becomes unbreakable!"
         ),
         picture_path="build_pics/zhonglibuildguide2.jpg",
+        status="approved",
+        created_at=datetime.utcnow()
+    )
+    guide3 = BuildGuide(
+        character_id="4",
+        username="AmberFan",
+        title="New Player Info",
+        description=(
+            "ATTENTION NEW PLAYERS: Amber is a 4-Star Pyro Bow character in Genshin Impact,"
+            " known as the only remaining Outrider of the Knights of Favonius."
+            " She can be obtained for free during the Archon Quest "
+            "Wind-Riding Amber excels as a Sub-DPS or Support character,"
+            " utilizing her skills to deal Pyro damage and support her team. Her abilities include Fiery Rain,"
+            " which deals AoE Pyro damage, and Explosive Puppet,"
+            " which deploys a doll that attracts enemies and explodes."
+        ),
+        picture_path="build_pics/amberguide3.jpg",
+        status="pending",
         created_at=datetime.utcnow()
     )
 
-    return guide1, guide2
+    return guide1, guide2, guide3
 
 
 if __name__ == "__main__":

@@ -15,12 +15,14 @@ export default function Header() {
         setMounted(true);
         setLoggedIn(isAuthenticated());
         setUser(getUser());
+
     }, []);
 
     const handleLogout = () => {
         logout();
         setLoggedIn(false);
         setUser(null);
+        window.location.href = '/';
     };
 
     const handleSearch = (e: React.FormEvent) => {
@@ -78,26 +80,36 @@ export default function Header() {
                 </form>
 
                 {/* Login/Logout Button */}
-                {loggedIn ? (
-                    <div className="flex items-center gap-3">
-            <span className="text-white font-semibold">
-              {user?.email}
-            </span>
+
+                <div className="flex items-center gap-3">
+                    {loggedIn && user?.email === 'test@t.ca' && (
                         <button
-                            onClick={handleLogout}
+                            onClick={() => router.push('/review')}
+                            className="px-6 py-2 bg-yellow-400 text-white font-semibold rounded-lg hover:bg-yellow-500 shadow-md"
+                        >
+                            Review Pending
+                        </button>
+                    )}
+
+                    {loggedIn ? (
+                        <>
+                            <span className="text-white font-semibold">{user?.email}</span>
+                            <button
+                                onClick={handleLogout}
+                                className="px-6 py-2 bg-white text-blue-600 font-semibold rounded-lg hover:bg-gray-100 shadow-md"
+                            >
+                                Logout
+                            </button>
+                        </>
+                    ) : (
+                        <button
+                            onClick={() => router.push('/login')}
                             className="px-6 py-2 bg-white text-blue-600 font-semibold rounded-lg hover:bg-gray-100 shadow-md"
                         >
-                            Logout
+                            Log In
                         </button>
-                    </div>
-                ) : (
-                    <button
-                        onClick={() => router.push('/login')}
-                        className="px-6 py-2 bg-white text-blue-600 font-semibold rounded-lg hover:bg-gray-100 shadow-md"
-                    >
-                        Log In
-                    </button>
-                )}
+                    )}
+                </div>
             </div>
         </header>
     );

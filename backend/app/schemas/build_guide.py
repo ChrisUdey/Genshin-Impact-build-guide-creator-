@@ -32,6 +32,7 @@ class BuildGuideResponse(BaseModel):
     description: str
     picture_path: Optional[str]
     created_at: str
+    status: Optional[str] = "pending"
     uploads: List[dict] = []
 
     class Config:
