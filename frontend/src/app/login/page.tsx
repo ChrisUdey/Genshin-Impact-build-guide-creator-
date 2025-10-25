@@ -15,21 +15,25 @@ export default function LoginPage() {
         e.preventDefault();
         setError('');
         setLoading(true);
+
         try {
             await login(email, password);
             // Redirect to HOME page after successful login
             router.push('/');
         } catch (err: any) {
-            setError(err.response?.data?.detail || 'Invalid credentials');
+            console.error('Login error:', err);
+            // Set error message
+            const errorMessage = err.response?.data?.detail || err.message || 'Invalid credentials';
+            setError(errorMessage);
+            // Don't redirect on error - stay on login page
         } finally {
             setLoading(false);
-            window.location.href = '/';
         }
     };
 
     return (
         <main className="container mx-auto p-8 max-w-md">
-            <div className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-lg">
+            <div className="bg-white p-8 rounded-lg shadow-lg">
                 <h1 className="text-3xl font-bold mb-6">Login</h1>
 
                 <form onSubmit={handleSubmit} className="space-y-4">
@@ -39,7 +43,7 @@ export default function LoginPage() {
                             type="email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
-                            className="w-full border border-gray-300 dark:border-gray-600 p-3 rounded bg-white dark:bg-gray-700"
+                            className="w-full border border-gray-300 p-3 rounded bg-white text-gray-900"
                             required
                         />
                     </div>
@@ -50,7 +54,7 @@ export default function LoginPage() {
                             type="password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
-                            className="w-full border border-gray-300 dark:border-gray-600 p-3 rounded bg-white dark:bg-gray-700"
+                            className="w-full border border-gray-300 p-3 rounded bg-white text-gray-900"
                             required
                         />
                     </div>
@@ -70,7 +74,7 @@ export default function LoginPage() {
                     </button>
                 </form>
 
-                <div className="mt-4 p-4 bg-gray-100 dark:bg-gray-700 rounded">
+                <div className="mt-4 p-4 bg-gray-100 rounded">
                     <p className="text-sm font-semibold mb-2">Test Credentials:</p>
                     <p className="text-sm">Email: test@t.ca</p>
                     <p className="text-sm">Password: 123456Pw</p>
