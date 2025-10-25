@@ -61,7 +61,7 @@ export default function PendingReviewPage() {
     return (
         <div className="min-h-screen bg-gray-100 p-8">
             <h1 className="text-black text-3xl font-bold mb-6">Pending Build Guides</h1>
-            {guides.length === 0 && <p>No pending guides at the moment.</p>}
+            {guides.length === 0 && <p className="text-gray-600">No pending guides at the moment.</p>}
             <div className="space-y-4">
                 {guides.map((guide) => (
                     <div
@@ -84,6 +84,16 @@ export default function PendingReviewPage() {
                                 Character: {guide.character_name || 'Unknown'}
                             </p>
                             <p className="text-gray-700 mt-1 line-clamp-3">{guide.description}</p>
+                            {guide.picture_path && (
+                                <img
+                                    src={`http://127.0.0.1:8000/static/${guide.picture_path}`}
+                                    alt={guide.title}
+                                    className="w-full max-w-[512px] h-64 object-cover mt-3"
+                                />
+                            )}
+                            <div className="mt-3 text-xs text-gray-400">
+                                {new Date(guide.created_at).toLocaleDateString()}
+                            </div>
                         </div>
                         <div className="flex gap-3">
                             <button

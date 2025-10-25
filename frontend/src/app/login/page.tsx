@@ -19,7 +19,7 @@ export default function LoginPage() {
         try {
             await login(email, password);
             // Redirect to HOME page after successful login
-            router.push('/');
+            window.location.href = '/';
         } catch (err: any) {
             console.error('Login error:', err);
             // Set error message
@@ -34,11 +34,11 @@ export default function LoginPage() {
     return (
         <main className="container mx-auto p-8 max-w-md">
             <div className="bg-white p-8 rounded-lg shadow-lg">
-                <h1 className="text-3xl font-bold mb-6">Login</h1>
+                <h1 className=" text-black text-3xl font-bold mb-6">Login</h1>
 
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <div>
-                        <label className="block mb-2 font-semibold">Email</label>
+                        <label className="text-black block mb-2 font-semibold">Email</label>
                         <input
                             type="email"
                             value={email}
@@ -49,7 +49,7 @@ export default function LoginPage() {
                     </div>
 
                     <div>
-                        <label className="block mb-2 font-semibold">Password</label>
+                        <label className="text-black block mb-2 font-semibold">Password</label>
                         <input
                             type="password"
                             value={password}
@@ -75,9 +75,9 @@ export default function LoginPage() {
                 </form>
 
                 <div className="mt-4 p-4 bg-gray-100 rounded">
-                    <p className="text-sm font-semibold mb-2">Test Credentials:</p>
-                    <p className="text-sm">Email: test@t.ca</p>
-                    <p className="text-sm">Password: 123456Pw</p>
+                    <p className=" text-black text-sm font-semibold mb-2">Test Credentials:</p>
+                    <p className="text-black text-sm">Email: test@t.ca</p>
+                    <p className="text-black text-sm">Password: 123456Pw</p>
                 </div>
             </div>
         </main>
