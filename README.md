@@ -1,119 +1,110 @@
 # Genshin Impact Build Guide Creator
 
-A web application that allows players to create and share character build guides for Genshin Impact. Users can browse 30 playable characters, create comprehensive build guides with multiple image uploads, and share strategies with the community.
+A web application where users can create and share character build guides for Genshin Impact. Users can post guides with images, and other users can view approved guides.
 
-## 🎮 About
+## Project Overview
 
-This project was created as part of the CWEB280 course to demonstrate full-stack web development skills using modern frameworks and best practices.
+This is a full-stack web application built for CWEB280. The app lets Genshin Impact players share their character builds, including artifacts, weapons, and strategies.
 
-## 🛠️ Tech Stack
+### Main Features
+- Browse all 92 Genshin Impact characters
+- Create build guides with images
+- View approved guides from other users
+- User authentication (login/logout)
+- Server-side validation to prevent bad data
+- Pagination for easier browsing
+
+---
+
+## Tech Stack
 
 ### Backend
-- **FastAPI** - Modern Python web framework
-- **SQLAlchemy** - SQL toolkit and ORM
-- **Python-Jose** - JWT token generation and validation
-- **Pydantic** - Data validation using Python type hints
-- **SQLite** - Lightweight database
+- **Python 3.x** with FastAPI
+- **SQLite** database (easy setup, no server needed)
+- **SQLAlchemy** ORM for database operations
+- **Pydantic** for data validation
+- **JWT** for authentication
+- **Python-Jose** for JWT tokens
 
 ### Frontend
-- **Next.js 14** - React framework with App Router
-- **TypeScript** - Type-safe JavaScript
-- **Tailwind CSS** - Utility-first CSS framework
-- **Axios** - HTTP client for API calls
+- **Next.js 15** (React framework)
+- **TypeScript** for type safety
+- **Tailwind CSS** for styling
+- **Axios** for API calls
 
 ### Testing
-- **Cypress** - End-to-end testing framework
+- **Cypress** for E2E testing
 
-## ✨ Features
+---
 
-- 📋 Browse 30 Genshin Impact characters with detailed information
-- 🔐 JWT-based authentication
-- ✍️ Create comprehensive build guides
-- 📸 Upload multiple showcase images per guide with captions
-- ✅ Client-side and server-side validation
-- 🔒 Protected routes requiring authentication
-- 📱 Responsive design with Tailwind CSS
+## Database Schema
 
-## 📁 Project Structure
-```
-genshin-build-guide/
-├── backend/                 # FastAPI backend
-│   ├── app/
-│   │   ├── models/         # SQLAlchemy database models
-│   │   ├── routes/         # API route handlers
-│   │   ├── middleware/     # Authentication middleware
-│   │   ├── schemas/        # Pydantic validation schemas
-│   │   ├── controllers/    # Business logic
-│   │   ├── main.py         # FastAPI application
-│   │   ├── database.py     # Database configuration
-│   │   └── config.py       # App configuration
-│   ├── uploads/            # User-uploaded files
-│   ├── requirements.txt    # Python dependencies
-│   └── run.py             # Development server
-│
-├── frontend/               # Next.js frontend
-│   ├── src/
-│   │   ├── app/           # Next.js pages (App Router)
-│   │   ├── components/    # React components
-│   │   ├── lib/          # Utilities and API client
-│   │   └── types/        # TypeScript type definitions
-│   └── package.json      # Node dependencies
-│
-└── cypress/               # E2E tests
-    └── e2e/
-```
+We have 3 main tables:
 
-## 🚀 Getting Started
+**Characters** (seeded from API)
+- Pre-loaded with all Genshin characters
+- Used as reference data
+
+**BuildGuides** (user created)
+- username, title, description
+- Links to a character
+- Has "pending" or "approved" status
+- Can have uploaded images
+
+**Uploads** (optional, linked to guides)
+- Image files with captions
+- Multiple uploads per guide
+
+---
+
+## Setup Instructions
 
 ### Prerequisites
-
-- Python 3.10+
+- Python 3.8+
 - Node.js 18+
-- pip (Python package manager)
-- npm or yarn (Node package manager)
+- npm or yarn
 
 ### Backend Setup
 
-1. Navigate to the backend directory:
+1. Navigate to backend folder:
 ```bash
 cd backend
 ```
 
-2. Create and activate virtual environment:
+2. Create virtual environment:
 ```bash
-# Windows
 python -m venv venv
-venv\Scripts\activate
-
-# Mac/Linux
-python3 -m venv venv
-source venv/bin/activate
 ```
 
-3. Install dependencies:
+3. Activate virtual environment:
+- Windows: `venv\Scripts\activate`
+- Mac/Linux: `source venv/bin/activate`
+
+4. Install dependencies:
 ```bash
 pip install -r requirements.txt
 ```
 
-4. Create `.env` file with configuration:
-```env
-SECRET_KEY=your-secret-key-change-this
-DATABASE_URL=sqlite:///./genshin_builds.db
-FRONTEND_URL=http://localhost:3000
+5. Seed the database with characters:
+```bash
+python scripts/seed_characters.py
 ```
+This fetches all 92 characters from the Genshin API and saves them to the database.
 
-5. Run the development server:
+6. Run the backend server:
 ```bash
 python run.py
 ```
 
-Backend will be available at: http://localhost:8000
+Backend should be running on: `http://localhost:8000`
 
-API Documentation: http://localhost:8000/docs
+You can check the API docs at: `http://localhost:8000/docs`
+
+---
 
 ### Frontend Setup
 
-1. Navigate to the frontend directory:
+1. Navigate to frontend folder:
 ```bash
 cd frontend
 ```
@@ -123,88 +114,209 @@ cd frontend
 npm install
 ```
 
-3. Create `.env.local` file:
-```env
+3. Create environment file `.env.local`:
+```
 NEXT_PUBLIC_API_URL=http://localhost:8000
 ```
 
-4. Run the development server:
+4. Run the frontend:
 ```bash
 npm run dev
 ```
 
-Frontend will be available at: http://localhost:3000
-
-## 🔑 Authentication
-
-**Test Credentials:**
-- Email: `test@t.ca`
-- Password: `123456Pw`
-
-## 📡 API Endpoints
-
-### Public Endpoints
-- `GET /api/characters/` - Get all characters
-- `GET /api/characters/{id}` - Get character by ID
-- `GET /api/guides/` - Get all build guides
-- `GET /api/guides/{id}` - Get guide by ID
-- `POST /api/auth/login` - User login
-
-### Protected Endpoints (Require JWT)
-- `POST /api/guides/` - Create new build guide
-- `POST /api/guides/{id}/upload` - Upload image to guide
-
-## 🧪 Testing
-
-Run Cypress E2E tests:
-```bash
-npm run cypress:open
-```
-
-**Note:** Both backend and frontend servers must be running for tests to pass.
-
-## 📊 Database Models
-
-### Characters (Seeded)
-- 30 playable characters from Genshin Impact
-- Includes: name, vision, weapon, nation, rarity, description
-
-### BuildGuides (User-created)
-- Character builds created by authenticated users
-- Fields: title, description, character reference
-
-### Uploads (User-created)
-- Multiple images per build guide
-- Fields: image path, caption, timestamp
-
-## 🎯 Project Requirements Met
-
-✅ **Two entities with Create/List/Display**: BuildGuides & Uploads  
-✅ **File upload with validation**: Image uploads with size/type checking  
-✅ **Client & server validation**: Inline error messages  
-✅ **Authentication**: JWT-based auth on protected routes  
-✅ **Invalid file deletion**: Automatically removes invalid uploads  
-✅ **E2E testing**: Cypress tests for complete user flows  
-
-## 🤝 Contributing
-
-This is a student project. For questions or issues, contact the development team.
-
-## 👥 Team
-
-- Chris Udey
-- Jorge Martinez
-
-## 📝 License
-
-This project is created for educational purposes as part of CWEB280 coursework.
-
-## 🙏 Acknowledgments
-
-- Character data sourced from Genshin Impact
-- Course materials from CWEB280
-- Saskatchewan Polytechnic
+Frontend should be running on: `http://localhost:3000`
 
 ---
 
-**Last Updated:** [Current Date]
+## Running the Application
+
+**You need both servers running at the same time!**
+
+Terminal 1 (Backend):
+```bash
+cd backend
+venv\Scripts\activate  # or source venv/bin/activate on Mac
+python run.py
+```
+
+Terminal 2 (Frontend):
+```bash
+cd frontend
+npm run dev
+```
+
+Then open your browser to: `http://localhost:3000`
+
+---
+
+## Test Credentials
+
+For testing the login:
+- **Email:** test@t.ca
+- **Password:** 123456Pw
+
+---
+
+## Features Explained
+
+### 1. Home Page
+Shows 4 characters at a time in a grid. You can click through pages to see all 92 characters. Click on a character to see their details.
+
+### 2. Guides Page
+This is where users can:
+- Create new build guides (must fill out form)
+- View all approved guides
+- See guides with pagination (4 per page)
+
+### 3. Login System
+- JWT-based authentication
+- Token stored in localStorage
+- Protected routes require login
+
+### 4. Server-Side Validation
+We validate ALL data on the server so users can't bypass frontend validation:
+- Username: 4-20 characters, alphanumeric only
+- Title: 4-30 characters
+- Description: 10-350 characters
+- Images: JPG/PNG only, max 2MB, no WebP
+
+---
+
+## API Endpoints
+
+### Characters
+- `GET /api/characters/` - Get all characters
+- `GET /api/characters/{id}` - Get specific character
+
+### Authentication
+- `POST /api/auth/login` - Login with email/password
+
+### Build Guides
+- `GET /api/guides/` - Get all approved guides
+- `POST /api/guides/` - Create new guide (validated)
+- `GET /api/guides/{id}` - Get specific guide
+- `GET /api/guides/pending` - Get pending guides (admin)
+
+---
+
+## Testing
+
+We used Cypress for end-to-end testing.
+
+### Running Tests
+
+**Make sure both backend and frontend are running first!**
+
+Then in a third terminal:
+```bash
+cd frontend
+npx cypress open
+```
+
+Click "E2E Testing" → Choose Chrome → Click on test files to run them
+
+### Test Files
+
+1. **01-login.cy.js** - Tests login with wrong password first, then correct password
+2. **02-home.cy.js** - Tests character display and pagination
+3. **03-guides.cy.js** - Tests creating guides with invalid inputs first, then valid inputs
+
+The tests check:
+- Login with invalid credentials shows errors
+- Login with valid credentials works
+- Form validation (empty fields, too short text)
+- Creating a guide with valid data
+- Guide appears in the list after creation
+- Navigation and pagination work
+
+**Important:** Tests will FAIL if the backend API is not running (as required by the assignment).
+
+---
+
+## Project Structure
+```
+genshin-build-guide/
+├── backend/
+│   ├── app/
+│   │   ├── models/          # Database models
+│   │   ├── routes/          # API endpoints
+│   │   ├── schemas/         # Pydantic validation
+│   │   ├── middleware/      # Auth middleware
+│   │   ├── database.py      # DB setup
+│   │   ├── config.py        # Settings
+│   │   └── main.py          # FastAPI app
+│   ├── scripts/
+│   │   └── seed_characters.py
+│   ├── static/              # Uploaded images
+│   ├── requirements.txt
+│   └── run.py
+│
+├── frontend/
+│   ├── src/
+│   │   ├── app/            # Next.js pages
+│   │   ├── components/     # React components
+│   │   ├── lib/           # API client, auth
+│   │   └── types/         # TypeScript types
+│   ├── cypress/
+│   │   └── e2e/           # Test files
+│   ├── package.json
+│   └── .env.local
+│
+└── README.md
+```
+
+---
+
+## Known Issues / Future Improvements
+
+- [ ] No admin panel yet (guides are auto-approved)
+- [ ] Could add edit/delete functionality
+- [ ] Could add user registration
+- [ ] Image preview before upload would be nice
+- [ ] Search functionality for guides
+
+---
+
+## Resources Used
+
+- Genshin Impact Character API: https://genshin.jmp.blue/
+- FastAPI Documentation: https://fastapi.tiangolo.com/
+- Next.js Documentation: https://nextjs.org/docs
+- Cypress Documentation: https://docs.cypress.io/
+- Tailwind CSS: https://tailwindcss.com/
+
+---
+
+## Notes
+
+- Character data is fetched from a public API and seeded into the database
+- All uploaded images are stored in `backend/app/static/build_pics/`
+- The database file is `backend/genshin_builds.db`
+- JWTs expire after 24 hours
+- Guides are set to "pending" status when created (for future admin approval feature)
+
+---
+
+## Troubleshooting
+
+**Backend won't start:**
+- Make sure virtual environment is activated
+- Try: `pip install -r requirements.txt` again
+
+**Frontend won't start:**
+- Delete `.next` folder and `node_modules`
+- Run `npm install` again
+
+**Tests failing:**
+- Make sure BOTH backend and frontend are running
+- Clear browser cache
+- Try: `localStorage.clear()` in browser console
+
+**Can't login:**
+- Check backend terminal for errors
+- Make sure you're using: test@t.ca / 123456Pw
+
+**Database errors:**
+- Delete `genshin_builds.db` and run seed script again
+
+---
