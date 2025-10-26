@@ -110,7 +110,7 @@ export default function BuildGuides() {
         <div className="min-h-screen bg-gradient-to-br from-purple-100 to-blue-100">
             <div className="container mx-auto p-8">
 
-                {/* 🆕 Add New Guide Section */}
+                {/* Add New Guide Section */}
                 {/* Existing Guides Section */}
                 <div className="bg-white rounded-3xl shadow-2xl p-8">
                     <div className="border-2 border-gray-300 rounded-2xl p-6 hover:shadow-xl bg-gradient-to-br from-gray-50 to-white">

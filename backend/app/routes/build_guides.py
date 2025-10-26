@@ -152,7 +152,7 @@ def create_build_guide(
         title=title,
         description=description,
         picture_path=picture_path,
-        status="pending",  # 🆕 automatically pending
+        status="pending",
     )
 
     db.add(guide)
