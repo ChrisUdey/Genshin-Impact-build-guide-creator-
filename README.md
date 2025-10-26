@@ -267,16 +267,6 @@ genshin-build-guide/
 
 ---
 
-## Known Issues / Future Improvements
-
-- [ ] No admin panel yet (guides are auto-approved)
-- [ ] Could add edit/delete functionality
-- [ ] Could add user registration
-- [ ] Image preview before upload would be nice
-- [ ] Search functionality for guides
-
----
-
 ## Resources Used
 
 - Genshin Impact Character API: https://genshin.jmp.blue/
