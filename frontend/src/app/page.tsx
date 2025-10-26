@@ -60,9 +60,10 @@ export default function HomePage() {
                     {/* Character Grid - 2x2 */}
                     <div className="grid grid-cols-2 gap-6 mb-8">
                         {currentCharacters.map((character) => (
-                            <Link
+                            // Change the div below to LINK and uncomment href for potential future release
+                            <div
                                 key={character.id}
-                                href={`/characters/${character.id}`}
+                                // href={`/characters/${character.id}`}
                                 className="border-2 border-gray-300 rounded-2xl p-6 hover:shadow-xl transition-all hover:scale-105 bg-gradient-to-br from-gray-50 to-white"
                             >
                                 {/* Character Image */}
@@ -104,7 +105,7 @@ export default function HomePage() {
                     {'⭐'.repeat(character.rarity)}
                   </span>
                                 </div>
-                            </Link>
+                            </div>
                         ))}
                     </div>
 

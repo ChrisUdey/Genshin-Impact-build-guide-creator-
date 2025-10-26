@@ -8,6 +8,7 @@ export default function BuildGuides() {
     const [characters, setCharacters] = useState<Character[]>([]);
     const [loading, setLoading] = useState(true);
     const [currentPage, setCurrentPage] = useState(1);
+    const [fileError, setFileError] = useState<string | null>(null);
     const guidesPerPage = 4;
 
     // New post state
@@ -59,8 +60,21 @@ export default function BuildGuides() {
         const file = e.target.files?.[0];
         if (!file) return;
 
+        // Reset any previous error
+        setFileError(null);
+
+        // Block WebP format
         if (file.type === "image/webp") {
-            alert("WebP images are not supported. Please upload PNG, JPG, or JPEG.");
+            setFileError("WebP images are not supported. Please upload PNG, JPG, or JPEG.");
+            e.target.value = "";
+            return;
+        }
+
+        // Limit file size to 5MB
+        const maxSizeMB = 5;
+        const fileSizeMB = file.size / (1024 * 1024);
+        if (fileSizeMB > maxSizeMB) {
+            setFileError(`File too large (${fileSizeMB.toFixed(2)} MB). Please choose an image under ${maxSizeMB} MB.`);
             e.target.value = "";
             return;
         }
@@ -196,13 +210,21 @@ export default function BuildGuides() {
                             {/* Picture upload */}
                             <div>
                                 <label className="block text-sm font-semibold mb-1">Upload Picture</label>
-                                <input
-                                    type="file"
-                                    accept="image/*"
-                                    onChange={handleFileChange}
-                                    className="px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition"
-                                />
-                                <p className="text-xs text-gray-500 mt-1">Supported formats: PNG, JPG, JPEG</p>
+                                <div className="flex flex-col gap-2">
+                                    <input
+                                        type="file"
+                                        accept="image/*"
+                                        onChange={handleFileChange}
+                                        className="px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition"
+                                    />
+                                    <p className="text-xs text-gray-500">Supported formats: PNG, JPG, JPEG (max 5MB)</p>
+
+                                    {fileError && (
+                                        <p className="text-red-600 text-sm font-medium bg-red-50 border border-red-200 p-2 rounded-lg">
+                                            {fileError}
+                                        </p>
+                                    )}
+                                </div>
                             </div>
 
                             {/* Submit button */}
