@@ -1,9 +1,11 @@
 from app.database import SessionLocal, Base, engine
 from app.models.artifact import Artifact
-
+from app.models.domain import Domain
+from app.models.domain_artifact import DomainArtifact
 
 def seed_artifacts():
     # Create tables if they don't exist
+    Base.metadata.drop_all(bind=engine)
     Base.metadata.create_all(bind=engine)
 
     db = SessionLocal()
@@ -273,7 +275,6 @@ def seed_artifacts():
                 max_rarity=4,
                 two_set_bonus="N/A",
                 four_set_bonus="N/A",
-                one_set_bonus="Affected by Hydro for 40% less time.",
                 image=""
             ),
             Artifact(
@@ -282,7 +283,6 @@ def seed_artifacts():
                 max_rarity=4,
                 two_set_bonus="N/A",
                 four_set_bonus="N/A",
-                one_set_bonus="Affected by Pyro for 40% less time.",
                 image=""
             ),
             Artifact(
@@ -291,7 +291,6 @@ def seed_artifacts():
                 max_rarity=4,
                 two_set_bonus="N/A",
                 four_set_bonus="N/A",
-                one_set_bonus="Affected by Electro for 40% less time.",
                 image=""
             ),
             Artifact(
@@ -300,7 +299,6 @@ def seed_artifacts():
                 max_rarity=4,
                 two_set_bonus="N/A",
                 four_set_bonus="N/A",
-                one_set_bonus="Affected by Cryo for 40% less time.",
                 image=""
             ),
             Artifact(
@@ -309,7 +307,6 @@ def seed_artifacts():
                 max_rarity=4,
                 two_set_bonus="N/A",
                 four_set_bonus="N/A",
-                one_set_bonus="Affected by Anemo for 40% less time.",
                 image=""
             ),
             Artifact(
@@ -444,7 +441,7 @@ def seed_artifacts():
         ]
 
         for art in artifacts:
-            art.image = f"{art.artifactID}.png"
+            art.image = f"artifact_pics/{art.artifactID}.png"
             existing = db.query(Artifact).filter(Artifact.artifactID == art.artifactID).first()
             if not existing:
                 db.add(art)
