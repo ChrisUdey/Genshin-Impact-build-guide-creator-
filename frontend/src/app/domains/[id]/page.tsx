@@ -40,20 +40,21 @@ export default function DomainPage() {
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-purple-100 to-blue-100 p-10">
-            <div className="bg-white p-10 rounded-3xl shadow-2xl max-w-6xl mx-auto">
+        <div className="min-h-screen bg-gradient-to-br from-purple-100 to-blue-100">
+            <div className="container mx-auto p-8">
+                <div className="bg-white rounded-3xl shadow-2xl p-8 min-h-[600px]">
 
                 {/* Title Row */}
                 <div className="flex justify-between items-start mb-10">
                     <h1 className="text-4xl font-bold text-gray-900">{domain.name}</h1>
-                    <h2 className="text-2xl font-bold text-gray-800">Domain Artifacts</h2>
+                    <h2 className="text-4xl font-bold text-gray-800 mb-1">Domain Artifacts</h2>
                 </div>
 
                 <div className="grid grid-cols-2 gap-10">
 
                     {/* LEFT — Domain Info */}
                     <div>
-                        <div className="bg-gray-200 border rounded-xl h-60 flex justify-center items-center mb-6">
+                        <div className="flex justify-center items-center bg-gradient-to-br from-purple-200 to-blue-200 rounded-xl h-48 mb-4">
                             <img
                                 src={`http://127.0.0.1:8000/static/nation_pics/${domain.nation}/icon.png`}
                                 className="h-48 w-48"
@@ -61,8 +62,14 @@ export default function DomainPage() {
                             />
                         </div>
 
-                        <p><strong>Location:</strong> {domain.location}</p>
-                        <p><strong>Nation:</strong> {domain.nation}</p>
+                        <div className="mt-4 flex gap-2 flex-wrap">
+                                    <span className="text-xs font-semibold bg-blue-500 text-white px-3 py-1 rounded-full">
+                                        {domain.location}
+                                    </span>
+                            <span className="text-xs font-semibold bg-gray-700 text-white px-3 py-1 rounded-full">
+                                        {domain.nation}
+                                    </span>
+                        </div>
 
                         <p className="mt-4 text-gray-800 leading-relaxed">
                             {domain.description}
@@ -70,13 +77,16 @@ export default function DomainPage() {
                     </div>
 
                     {/* RIGHT — Artifacts */}
-                    <div className="space-y-6">
+
+                    <div className="text-black pace-y-6">
                         {domain.artifacts.map((da) => (
-                            <div key={da.artifact.id} className="border rounded-xl p-4 shadow bg-gray-50">
-                                <div className="flex gap-4">
+                            <div key={da.id} className="border rounded-xl p-4 shadow bg-gray-50">
+
+                            <div className="flex gap-4">
                                     <img
-                                        src={`http://127.0.0.1:8000/static/artifacts/${da.artifact.id}.png`}
+                                        src={`http://127.0.0.1:8000/static/${da.artifact.image}`}
                                         className="h-20 w-20"
+                                        alt="test"
                                     />
 
                                     <div>
@@ -92,6 +102,7 @@ export default function DomainPage() {
 
                 </div>
             </div>
+        </div>
         </div>
     );
 }

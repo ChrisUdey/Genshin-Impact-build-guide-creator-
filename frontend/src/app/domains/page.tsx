@@ -90,15 +90,43 @@ export default function Domains() {
                                 </p>
 
                                 {/* Badges */}
-                                <div className="mt-4 flex gap-2 flex-wrap">
+                                <div className="mt-4 flex justify-between items-center w-full">
+
+                                    {/* Badges */}
+                                    <div className="flex gap-2 flex-wrap">
                                     <span className="text-xs font-semibold bg-blue-500 text-white px-3 py-1 rounded-full">
                                         {domain.location}
                                     </span>
-                                    <span className="text-xs font-semibold bg-gray-700 text-white px-3 py-1 rounded-full">
+                                                                    <span className="text-xs font-semibold bg-gray-700 text-white px-3 py-1 rounded-full">
                                         {domain.nation}
                                     </span>
+                                    </div>
+
+                                    {/* Reload Button */}
+                                    <button
+                                        onClick={async (e) => {
+                                            e.stopPropagation();
+                                            try {
+                                                // Remove the domain locally
+                                                setDomains(prev => prev.filter(d => d.id !== domain.id));
+
+                                                // Re-fetch the list (optional)
+                                                const res = await api.get('/api/domains/');
+                                                setDomains(res.data);
+
+                                            } catch (err) {
+                                                console.error("Failed to reload domain:", err);
+                                            }
+                                        }}
+                                        className="bg-red-600 text-white text-xs font-semibold px-3 py-1 rounded-full
+                                                hover:bg-red-700 transition
+                                                shadow-sm
+                                            ">Reload
+                                    </button>
                                 </div>
+
                             </div>
+
                         ))}
                     </div>
 
