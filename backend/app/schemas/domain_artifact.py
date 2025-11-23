@@ -1,18 +1,21 @@
 from pydantic import BaseModel
 
-from app.schemas.artifact import ArtifactResponse
-
-
-class DomainArtifactBase(BaseModel):
-    domain_id: int
-    artifact_id: int
-
-class DomainArtifactCreate(DomainArtifactBase):
-    pass
-
-class DomainArtifactResponse(DomainArtifactBase):
-    id: int
-    artifact: ArtifactResponse  # include artifact details if needed
+class ArtifactResponse(BaseModel):
+    artifactID: str
+    name: str
+    max_rarity: int
+    two_set_bonus: str
+    four_set_bonus: str
+    image: str | None
 
     class Config:
-        orm_mode = True
+        from_attributes = True
+
+
+class DomainArtifactResponse(BaseModel):
+    id: int
+    artifact_id: str
+    artifact: ArtifactResponse | None = None  # <-- NESTED ARTIFACT
+
+    class Config:
+        from_attributes = True

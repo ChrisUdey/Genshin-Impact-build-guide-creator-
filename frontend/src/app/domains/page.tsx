@@ -4,42 +4,39 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import api from '@/lib/api';
-import { setCharacterMap } from '@/lib/characters';
-import { Character } from '@/types';
+import { Domain } from '@/types';
 
-export default function HomePage() {
-    const [characters, setCharacters] = useState<Character[]>([]);
+export default function Domains() {
+    const [domains, setDomains] = useState<Domain[]>([]);
     const [loading, setLoading] = useState(true);
     const [currentPage, setCurrentPage] = useState(1);
-    const charactersPerPage = 4;
+    const domainsPerPage = 4;
     const router = useRouter();
 
     useEffect(() => {
-        const fetchCharacters = async () => {
+        const fetchDomains = async () => {
             try {
-                const response = await api.get('/api/characters/');
-                setCharacters(response.data);
-                setCharacterMap(response.data); // populate map
+                const response = await api.get('/api/domains/');
+                setDomains(response.data);
             } catch (error) {
-                console.error('Failed to fetch characters:', error);
+                console.error('Failed to fetch domains:', error);
             } finally {
                 setLoading(false);
             }
         };
 
-        fetchCharacters();
+        fetchDomains();
     }, []);
 
-    // Calculate pagination
-    const indexOfLastChar = currentPage * charactersPerPage;
-    const indexOfFirstChar = indexOfLastChar - charactersPerPage;
-    const currentCharacters = characters.slice(indexOfFirstChar, indexOfLastChar);
-    const totalPages = Math.ceil(characters.length / charactersPerPage);
+    // Pagination
+    const indexOfLast = currentPage * domainsPerPage;
+    const indexOfFirst = indexOfLast - domainsPerPage;
+    const currentDomains = domains.slice(indexOfFirst, indexOfLast);
+    const totalPages = Math.ceil(domains.length / domainsPerPage);
 
     const handlePrevPage = () => {
         setCurrentPage((prev) => Math.max(prev - 1, 1));
     };
-
     const handleNextPage = () => {
         setCurrentPage((prev) => Math.min(prev + 1, totalPages));
     };
@@ -47,63 +44,59 @@ export default function HomePage() {
     if (loading) {
         return (
             <div className="flex items-center justify-center min-h-screen">
-                <div className="text-xl font-bold">Loading characters...</div>
+                <div className="text-xl font-bold">Loading domains...</div>
             </div>
         );
     }
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-purple-100 to-blue-100">
-            {/* Main Content Area */}
             <div className="container mx-auto p-8">
                 <div className="bg-white rounded-3xl shadow-2xl p-8 min-h-[600px]">
-                    {/* Character Grid - 2x2 */}
+
+                    {/* Domain Grid (2x2) */}
                     <div className="grid grid-cols-2 gap-6 mb-8">
-                        {currentCharacters.map((character) => (
-                            // Change the div below to LINK and uncomment href for potential future release
+                        {currentDomains.map((domain) => (
+
                             <div
-                                key={character.id}
-                                // href={`/characters/${character.[id]}`}
-                                className="border-2 border-gray-300 rounded-2xl p-6 hover:shadow-xl transition-all hover:scale-105 bg-gradient-to-br from-gray-50 to-white"
+                                key={domain.id}
+                                onClick={() => router.push(`/domains/${domain.id}`)}
+                                className="cursor-pointer border-2 border-gray-300 rounded-2xl p-6 hover:shadow-xl transition-all hover:scale-105 bg-gradient-to-br from-gray-50 to-white"
                             >
-                                {/* Character Image */}
+
+                            {/* Domain Image */}
                                 <div className="flex justify-center items-center bg-gradient-to-br from-purple-200 to-blue-200 rounded-xl h-48 mb-4">
                                     <img
-                                        src={`https://genshin.jmp.blue/characters/${character.key}/icon-big`}
-                                        alt={character.name}
-                                        className="h-full object-contain"
+                                        src={`http://127.0.0.1:8000/static/nation_pics/${domain.nation}/icon.png`}
+                                        className="h-48 w-48"
+                                        alt="test"
                                     />
+
                                 </div>
 
-                                {/* Character Name - DARKER */}
+                                {/* Domain Name */}
                                 <h3 className="font-bold text-xl mb-1 text-gray-900">
-                                    {character.name}
+                                    {domain.name}
                                 </h3>
 
-                                {/* Character Title - DARKER */}
+                                {/* Domain Type */}
                                 <p className="text-sm text-gray-700 italic mb-3 font-medium">
-                                    {character.title}
+                                    {domain.type}
                                 </p>
 
-                                {/* Character Description - DARKER */}
+                                {/* Domain Description */}
                                 <p className="text-sm text-gray-800 line-clamp-4 leading-relaxed">
-                                    {character.description ||
-                                        `${character.vision} character wielding a ${character.weapon}. ` +
-                                        `From ${character.nation}. ${character.affiliation}.`
-                                    }
+                                    {domain.description}
                                 </p>
 
-                                {/* Stats badges */}
+                                {/* Badges */}
                                 <div className="mt-4 flex gap-2 flex-wrap">
-                  <span className="text-xs font-semibold bg-blue-500 text-white px-3 py-1 rounded-full">
-                    {character.vision}
-                  </span>
+                                    <span className="text-xs font-semibold bg-blue-500 text-white px-3 py-1 rounded-full">
+                                        {domain.location}
+                                    </span>
                                     <span className="text-xs font-semibold bg-gray-700 text-white px-3 py-1 rounded-full">
-                    {character.weapon}
-                  </span>
-                                    <span className="text-sm">
-                    {'⭐'.repeat(character.rarity)}
-                  </span>
+                                        {domain.nation}
+                                    </span>
                                 </div>
                             </div>
                         ))}
@@ -120,8 +113,8 @@ export default function HomePage() {
                         </button>
 
                         <span className="text-lg font-bold text-gray-800">
-              Page {currentPage} of {totalPages}
-            </span>
+                            Page {currentPage} of {totalPages}
+                        </span>
 
                         <button
                             onClick={handleNextPage}
@@ -131,6 +124,7 @@ export default function HomePage() {
                             Next →
                         </button>
                     </div>
+
                 </div>
             </div>
         </div>

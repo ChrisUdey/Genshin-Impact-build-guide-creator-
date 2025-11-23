@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from .database import engine, Base
-from .routes import characters, auth, build_guides
+from .routes import characters, auth, build_guides, domain
 from .config import settings
 import os
 
@@ -32,6 +32,7 @@ app.mount("/static", StaticFiles(directory="app/static"), name="static")
 app.include_router(build_guides.router)
 app.include_router(characters.router)
 app.include_router(auth.router)
+app.include_router(domain.router)
 
 @app.get("/")
 async def root():

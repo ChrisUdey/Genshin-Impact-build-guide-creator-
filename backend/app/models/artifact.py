@@ -1,5 +1,4 @@
-# app/models/artifact.py
-from sqlalchemy import Column, String
+from sqlalchemy import Column, String, Text, Integer
 from sqlalchemy.orm import relationship
 from app.database import Base
 
@@ -8,10 +7,12 @@ class Artifact(Base):
 
     artifactID = Column(String, primary_key=True, index=True)
     name = Column(String, nullable=False)
-    max_rarity = Column(String, nullable=False)
-    two_set_bonus = Column(String, nullable=True)
-    four_set_bonus = Column(String, nullable=True)
+    max_rarity = Column(Integer, nullable=False)
+    two_set_bonus = Column(Text, nullable=False)
+    four_set_bonus = Column(Text, nullable=False)
     image = Column(String, nullable=True)
 
-    # Use string reference; do NOT import DomainArtifact here
-    domain_artifacts = relationship("DomainArtifact", back_populates="artifact")
+    # Relationship
+    domain_artifacts = relationship(
+        "DomainArtifact", back_populates="artifact", cascade="all, delete-orphan"
+    )

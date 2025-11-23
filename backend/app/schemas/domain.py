@@ -1,23 +1,15 @@
-from typing import List, Optional
 from pydantic import BaseModel
+from .domain_artifact import DomainArtifactResponse
 
-from app.schemas.domain_artifact import DomainArtifactResponse
-
-
-class DomainBase(BaseModel):
+class DomainResponse(BaseModel):
+    id: int
     name: str
     type: str
     description: str
     location: str
     nation: str
-    picture_path: Optional[str] = None
-
-class DomainCreate(DomainBase):
-    pass
-
-class DomainResponse(DomainBase):
-    id: int
-    artifacts: List[DomainArtifactResponse] = []
+    image: str | None
+    artifacts: list[DomainArtifactResponse]  # <-- NOW CORRECT
 
     class Config:
-        orm_mode = True
+        from_attributes = True

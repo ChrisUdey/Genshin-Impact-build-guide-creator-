@@ -34,6 +34,17 @@ export default function Sidebar() {
                 >
                     Guides
                 </Link>
+
+                <Link
+                    href="/domains"
+                    className={`block text-center py-3 px-4 rounded-lg font-semibold transition-colors ${
+                        isActive('/domains')
+                            ? 'bg-blue-500 text-white'
+                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    }`}
+                >
+                    Domains
+                </Link>
             </nav>
         </aside>
     );
