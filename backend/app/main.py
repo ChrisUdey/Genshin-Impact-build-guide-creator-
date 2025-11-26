@@ -2,9 +2,11 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from .database import engine, Base
-from .routes import characters, auth, build_guides, domain
+from .routes import characters, auth, build_guides, domain, auth_google
 from .config import settings
 import os
+
+from .routes.auth_google import google_auth
 
 # Create tables
 Base.metadata.create_all(bind=engine)
@@ -33,6 +35,7 @@ app.include_router(build_guides.router)
 app.include_router(characters.router)
 app.include_router(auth.router)
 app.include_router(domain.router)
+app.include_router(auth_google.router)
 
 @app.get("/")
 async def root():

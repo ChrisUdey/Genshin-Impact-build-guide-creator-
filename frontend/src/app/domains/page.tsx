@@ -60,72 +60,61 @@ export default function Domains() {
 
                             <div
                                 key={domain.id}
+                                data-cy="domain-card"
                                 onClick={() => router.push(`/domains/${domain.id}`)}
-                                className="cursor-pointer border-2 border-gray-300 rounded-2xl p-6 hover:shadow-xl transition-all hover:scale-105 bg-gradient-to-br from-gray-50 to-white"
+                                className="cursor-pointer border rounded-2xl p-6 hover:bg-gray-100 transition"
                             >
-
-                            {/* Domain Image */}
+                                {/* Domain Image */}
                                 <div className="flex justify-center items-center bg-gradient-to-br from-purple-200 to-blue-200 rounded-xl h-48 mb-4">
                                     <img
                                         src={`http://127.0.0.1:8000/static/nation_pics/${domain.nation}/icon.png`}
                                         className="h-48 w-48"
-                                        alt="test"
                                     />
-
                                 </div>
 
-                                {/* Domain Name */}
-                                <h3 className="font-bold text-xl mb-1 text-gray-900">
-                                    {domain.name}
-                                </h3>
+                                <h3 className="font-bold text-xl mb-1 text-gray-900">{domain.name}</h3>
 
-                                {/* Domain Type */}
-                                <p className="text-sm text-gray-700 italic mb-3 font-medium">
-                                    {domain.type}
-                                </p>
+                                <p className="text-sm text-gray-700 italic mb-3 font-medium">{domain.type}</p>
 
-                                {/* Domain Description */}
                                 <p className="text-sm text-gray-800 line-clamp-4 leading-relaxed">
                                     {domain.description}
                                 </p>
 
-                                {/* Badges */}
                                 <div className="mt-4 flex justify-between items-center w-full">
-
-                                    {/* Badges */}
                                     <div className="flex gap-2 flex-wrap">
-                                    <span className="text-xs font-semibold bg-blue-500 text-white px-3 py-1 rounded-full">
-                                        {domain.location}
-                                    </span>
-                                                                    <span className="text-xs font-semibold bg-gray-700 text-white px-3 py-1 rounded-full">
-                                        {domain.nation}
-                                    </span>
+                                        <span className="text-xs font-semibold bg-blue-500 text-white px-3 py-1 rounded-full">
+                                            {domain.location}
+                                        </span>
+                                        <span className="text-xs font-semibold bg-gray-700 text-white px-3 py-1 rounded-full">
+                                            {domain.nation}
+                                        </span>
                                     </div>
 
-                                    {/* Reload Button */}
                                     <button
+                                        data-cy="reload-button"
                                         onClick={async (e) => {
-                                            e.stopPropagation();
+                                            e.stopPropagation(); // Stop navigation only
                                             try {
-                                                // Remove the domain locally
-                                                setDomains(prev => prev.filter(d => d.id !== domain.id));
+                                                const res = await api.post(`/api/domains/reload/${domain.id}`);
 
-                                                // Re-fetch the list (optional)
-                                                const res = await api.get('/api/domains/');
-                                                setDomains(res.data);
+                                                setDomains((prev) => {
+                                                    const copy = [...prev];
+                                                    const idx = prev.findIndex((d) => d.id === domain.id);
+                                                    if (idx !== -1) copy[idx] = res.data;
+                                                    return copy;
+                                                });
 
                                             } catch (err) {
                                                 console.error("Failed to reload domain:", err);
                                             }
                                         }}
-                                        className="bg-red-600 text-white text-xs font-semibold px-3 py-1 rounded-full
-                                                hover:bg-red-700 transition
-                                                shadow-sm
-                                            ">Reload
+                                        className="px-4 py-2 bg-red-500 text-white text-sm rounded hover:bg-red-600"
+                                    >
+                                        Reload Domain
                                     </button>
                                 </div>
-
                             </div>
+
 
                         ))}
                     </div>

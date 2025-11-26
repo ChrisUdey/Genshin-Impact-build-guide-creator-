@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import api from '@/lib/api';
 import { Domain, Artifact } from '@/types';
+import {router} from "next/client";
 
 export default function DomainPage() {
     const params = useParams();
@@ -40,7 +41,17 @@ export default function DomainPage() {
     }
 
     return (
+
         <div className="min-h-screen bg-gradient-to-br from-purple-100 to-blue-100">
+            <button
+                data-cy="back-button"
+                // small workaround because im tired of this project :)
+                onClick={() =>  window.location.href = '/domains'}
+                className="mb-6 text-blue-600 underline"
+            >
+                Back
+            </button>
+
             <div className="container mx-auto p-8">
                 <div className="bg-white rounded-3xl shadow-2xl p-8 min-h-[600px]">
 
@@ -80,10 +91,12 @@ export default function DomainPage() {
 
                     <div className="text-black pace-y-6">
                         {domain.artifacts.map((da) => (
-                            <div key={da.id} className="border rounded-xl p-4 shadow bg-gray-50">
+                            <div key={da.id} className="border rounded-xl p-4 shadow bg-gray-50"
+                                 data-cy="artifact-item">
 
                             <div className="flex gap-4">
                                     <img
+                                        data-cy="artifact-image"
                                         src={`http://127.0.0.1:8000/static/${da.artifact.image}`}
                                         className="h-20 w-20"
                                         alt="test"

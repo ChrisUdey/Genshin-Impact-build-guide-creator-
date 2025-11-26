@@ -4,7 +4,9 @@ from scripts.seed_characters import seed_characters
 from scripts.seed_domain_artifacts import seed_domain_artifacts
 from scripts.seed_domains import seed_domains
 from app.database import Base, engine
-if __name__ == "__main__":
+
+# Seeds all fields, pretty shrimple
+def seed_all():
     Base.metadata.drop_all(bind=engine)
     Base.metadata.create_all(bind=engine)
     seed_characters()

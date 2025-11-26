@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Sidebar from "@/components/Sidebar";
 import Header from "@/components/Header";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 
 const geistSans = Geist({
     variable: "--font-geist-sans",
@@ -27,15 +28,19 @@ export default function RootLayout({
     return (
         <html lang="en">
         <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <div className="flex flex-col min-h-screen">
-            <Header />
-            <div className="flex flex-1">
-                <Sidebar />
-                <main className="flex-1">
-                    {children}
-                </main>
+        <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!}>
+            <div className="flex flex-col min-h-screen">
+                <Header />
+                <div className="flex flex-1">
+                    <Sidebar />
+
+                    {/* Only place children HERE */}
+                    <main className="flex-1">
+                        {children}
+                    </main>
+                </div>
             </div>
-        </div>
+        </GoogleOAuthProvider>
         </body>
         </html>
     );

@@ -6,6 +6,8 @@ class Settings(BaseSettings):
     # JWT
     SECRET_KEY: str = "CWEBKEY"
     ALGORITHM: str = "HS256"
+    GOOGLE_CLIENT_ID: str | None = None
+    GOOGLE_CLIENT_SECRET: str | None = None
     ACCESS_TOKEN_EXPIRE_HOURS: int = 24
 
     # File Upload
@@ -22,6 +24,7 @@ class Settings(BaseSettings):
 
     class Config:
         env_file = ".env"
+        extra = "allow"
 
 
 settings = Settings()
